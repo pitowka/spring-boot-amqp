@@ -3,7 +3,6 @@ package pitowka.amqp;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
-import org.springframework.amqp.rabbit.test.RabbitListenerTest;
 import org.springframework.amqp.rabbit.test.TestRabbitTemplate;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,6 @@ class PojoAmqpTests {
 	}
 
 	@TestConfiguration
-	@RabbitListenerTest(spy = false, capture = true)
 	static class PojoAmqpTestsConfiguration {
 		@Bean
 		public TestRabbitTemplate testRabbitTemplate(ConnectionFactory connectionFactory, MessageConverter jsonMessageConverter) {

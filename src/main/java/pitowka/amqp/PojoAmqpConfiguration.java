@@ -22,11 +22,6 @@ public class PojoAmqpConfiguration {
     }
 
     @Bean
-    MessageConverter jsonMessageConverter() {
-        return new Jackson2JsonMessageConverter("*");
-    }
-
-    @Bean
     RabbitTemplate pojoRabbitTemplate(ConnectionFactory connectionFactory, MessageConverter jsonMessageConverter) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
         template.setRoutingKey("pojo.queue");
