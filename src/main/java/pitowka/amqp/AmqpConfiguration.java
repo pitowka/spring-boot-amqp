@@ -44,18 +44,27 @@ public class AmqpConfiguration {
     }
 
     @Bean
-    public SimpleMessageListenerContainer listenerContainer(ConnectionFactory connectionFactory) {
+    public SimpleMessageListenerContainer listenerContainer(ConnectionFactory connectionFactory, MessageHandler messageHandler) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.setQueueNames("hello.world.queue");
-        container.setMessageListener(new MessageListenerAdapter(new HelloWorldHandler(), "handleMessage"));
+        container.setMessageListener(new MessageListenerAdapter(messageHandler, "handleMessage"));
 
         return container;
     }
 
-    prerob to na bean a potom mozes pozut napr @SpyBean, resp. @MockitospyBean
-    public class HelloWorldHandler {
+    @Bean
+    MessageHandler messageHandler(){
+        return new HelloWorldHandler();
+    }
+    
+    public interface MessageHandler{
+        void handleMessage(String text);
+    }
 
+    public class HelloWorldHandler implements MessageHandler{
+
+        @Override
         public void handleMessage(String text) {
             System.out.println("Received: " + text);
         }
