@@ -90,7 +90,7 @@ public class AnnotationAmqpConfiguration {
 
         @Override
         public void handleMessage(AnnotationRequest request) {
-            System.out.println("Received: " + request);
+            System.err.println("Received: " + request);
         }
     }
 }

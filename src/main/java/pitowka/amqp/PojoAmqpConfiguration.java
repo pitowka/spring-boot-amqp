@@ -108,7 +108,7 @@ public class PojoAmqpConfiguration {
 
         @Override
         public void handleMessage(PojoRequest request) {
-            System.out.println("Received: " + request);
+            System.err.println("Received: " + request);
         }
     }
 }

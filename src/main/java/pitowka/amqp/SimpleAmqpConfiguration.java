@@ -48,7 +48,7 @@ public class SimpleAmqpConfiguration {
 
         @Override
         public void handleMessage(String text) {
-            System.out.println("Received: " + text);
+            System.err.println("Received: " + text);
         }
     }
 }
