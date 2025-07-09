@@ -2,20 +2,17 @@ package pitowka.amqp;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.Spy;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.test.RabbitListenerTest;
 import org.springframework.amqp.rabbit.test.TestRabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.bean.override.mockito.MockitoBeans;
 import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -23,7 +20,7 @@ import org.testcontainers.lifecycle.Startables;
 
 @Testcontainers
 @SpringBootTest
-class AmqpApplicationTests {
+class SimpleAmqpTests {
 
 	@Container
 	@ServiceConnection
@@ -42,7 +39,7 @@ class AmqpApplicationTests {
 
 	@TestConfiguration
 	@RabbitListenerTest(spy = false, capture = true)
-	static class AmqpApplicationTestsConfiguration{
+	static class SimpleAmqpTestsConfiguration {
 		@Bean
 		public TestRabbitTemplate testRabbitTemplate(ConnectionFactory connectionFactory) {
 			return new TestRabbitTemplate(connectionFactory);
@@ -50,10 +47,10 @@ class AmqpApplicationTests {
 	}
 
 	@MockitoBean
-	private AmqpConfiguration.MessageHandler messageHandler;
+	private SimpleAmqpConfiguration.MessageHandler messageHandler;
 
 	@Test
-	void contextLoads(@Autowired TestRabbitTemplate testRabbitTemplate) {
+	void handleMessage(@Autowired TestRabbitTemplate testRabbitTemplate) {
 		testRabbitTemplate.convertAndSend("hello.world.queue", "Hello World");
 
 		Mockito.verify(messageHandler).handleMessage("Hello World");
