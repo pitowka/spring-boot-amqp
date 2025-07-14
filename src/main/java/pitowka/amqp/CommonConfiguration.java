@@ -26,7 +26,7 @@ public class CommonConfiguration {
     }
 
     @Bean
-    MessageConverter jsonMessageConverter() {
+    public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter("*");
     }
 }

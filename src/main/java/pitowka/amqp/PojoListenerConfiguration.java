@@ -9,12 +9,13 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Configuration
-public class PojoAmqpConfiguration {
+@Configuration()
+public class PojoListenerConfiguration {
 
     @Bean
     Queue pojoQueue() {
@@ -42,9 +43,9 @@ public class PojoAmqpConfiguration {
     }
 
     @Bean
-    MessageListenerAdapter pojoListenerAdapter(PojoMessageHandler handler, Jackson2JsonMessageConverter converter) {
+    MessageListenerAdapter pojoListenerAdapter(PojoMessageHandler handler, MessageConverter jsonMessageConverter) {
         MessageListenerAdapter adapter = new MessageListenerAdapter(handler, "handleMessage");
-        adapter.setMessageConverter(converter);
+        adapter.setMessageConverter(jsonMessageConverter);
 
         return adapter;
     }

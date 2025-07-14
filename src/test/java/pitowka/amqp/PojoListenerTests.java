@@ -12,7 +12,6 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.testcontainers.containers.RabbitMQContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -21,7 +20,7 @@ import org.testcontainers.lifecycle.Startables;
 
 @Testcontainers
 @SpringBootTest
-class PojoAmqpTests {
+class PojoListenerTests {
 
 	@Container
 	@ServiceConnection
@@ -32,10 +31,10 @@ class PojoAmqpTests {
 	static void overrideProperties(DynamicPropertyRegistry registry) {
 		Startables.deepStart(rabbitMQContainer).join();
 
-		registry.add("spring.rabbitmq.host", rabbitMQContainer::getHost);
-		registry.add("spring.rabbitmq.port", () -> rabbitMQContainer.getMappedPort(5672));
-		registry.add("spring.rabbitmq.username", rabbitMQContainer::getAdminUsername);
-		registry.add("spring.rabbitmq.password", rabbitMQContainer::getAdminPassword);
+//		registry.add("spring.rabbitmq.host", rabbitMQContainer::getHost);
+//		registry.add("spring.rabbitmq.port", () -> rabbitMQContainer.getMappedPort(5672));
+//		registry.add("spring.rabbitmq.username", rabbitMQContainer::getAdminUsername);
+//		registry.add("spring.rabbitmq.password", rabbitMQContainer::getAdminPassword);
 	}
 
 	@TestConfiguration
@@ -50,12 +49,12 @@ class PojoAmqpTests {
 	}
 
 	@MockitoSpyBean
-	private PojoAmqpConfiguration.PojoMessageHandler messageHandler;
+	private PojoListenerConfiguration.PojoMessageHandler messageHandler;
 
 	@Test
 	void handleMessage(@Autowired TestRabbitTemplate testRabbitTemplate) {
-		testRabbitTemplate.convertAndSend("pojo.queue", new PojoAmqpConfiguration.PojoRequest("text", 10));
+		testRabbitTemplate.convertAndSend("pojo.queue", new PojoListenerConfiguration.PojoRequest("text", 10));
 
-		Mockito.verify(messageHandler).handleMessage(new PojoAmqpConfiguration.PojoRequest("text", 10));
+		Mockito.verify(messageHandler).handleMessage(new PojoListenerConfiguration.PojoRequest("text", 10));
 	}
 }
