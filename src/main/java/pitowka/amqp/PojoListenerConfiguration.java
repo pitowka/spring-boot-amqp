@@ -1,5 +1,7 @@
 package pitowka.amqp;
 
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -102,6 +104,19 @@ public class PojoListenerConfiguration {
                 "text='" + text + '\'' +
                 ", count=" + count +
                 '}';
+        }
+    }
+
+    @Data
+    @Builder
+    public static class Response{
+        private final String message;
+        private final ErrorSection error;
+
+        @Data
+        static class ErrorSection{
+            private final String code;
+            private final String message;
         }
     }
 

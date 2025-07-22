@@ -18,8 +18,13 @@ repositories {
 }
 
 dependencies {
+	compileOnly("org.projectlombok:lombok")
+	annotationProcessor("org.projectlombok:lombok")
+
+
 	implementation("org.springframework.boot:spring-boot-starter-amqp")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
@@ -31,6 +36,9 @@ dependencies {
 	testImplementation("org.testcontainers:rabbitmq")
 
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	implementation("org.jetbrains.kotlinx:kotlin-jupyter-api:0.14.1-541")
+	//developmentOnly("org.jetbrains.kotlinx:kotlin-jupyter-spring-starter:0.14.1-541")
 }
 
 tasks.withType<Test> {
